@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent">
+
+	<com.vasthread.webviewtv.demo.widget.WebpageAdapterWebView
+		android:id="@+id/webView"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent" />
+
+	<FrameLayout
+		android:id="@+id/fullscreenContainer"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:layout_gravity="center" />
+
+	<com.vasthread.webviewtv.demo.widget.WaitingView
+		android:id="@+id/waitingView"
+		android:layout_width="100dp"
+		android:layout_height="100dp"
+		android:layout_gravity="center"
+		android:visibility="gone" />
+
+	<com.vasthread.webviewtv.demo.widget.ChannelBarView
+		android:id="@+id/channelBarView"
+		android:layout_width="500dp"
+		android:layout_height="wrap_content"
+		android:layout_gravity="bottom|center"
+		android:layout_marginBottom="30dp"
+		android:visibility="gone" />
+
+</merge>
