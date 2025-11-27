@@ -1,3 +1,7 @@
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
@@ -12,7 +16,7 @@ android {
         minSdk = 21
         targetSdk = 34
         versionCode = 6
-        versionName = "1.6"
+        versionName = "25.11.27"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
@@ -33,6 +37,18 @@ android {
     }
     kotlinOptions {
         jvmTarget = "1.8"
+    }
+
+    applicationVariants.all {
+        val buildType = buildType.name // debug/release
+        val version = versionName // 1.0.0
+        val time = SimpleDateFormat("yyyyMMdd", Locale.getDefault()).format(Date())
+
+        outputs.all {
+            val output = this as com.android.build.gradle.internal.api.BaseVariantOutputImpl
+            // 格式: MyApp-google-v1.0.0-debug-20241127.apk
+            output.outputFileName = "电视家-v${version}-${buildType}-${time}.apk"
+        }
     }
 
 }
