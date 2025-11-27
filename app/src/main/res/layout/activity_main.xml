@@ -36,12 +36,12 @@
 			android:layout_gravity="end"
 			android:visibility="gone" />
 
-<!--		<com.vasthread.webviewtv.demo.widget.AppSettingsView
+		<com.vasthread.webviewtv.demo.widget.AppSettingsView
 			android:id="@+id/appSettings"
 			android:layout_width="400dp"
 			android:layout_height="wrap_content"
 			android:layout_gravity="center"
-			android:visibility="gone" />-->
+			android:visibility="gone" />
 
 	</com.vasthread.webviewtv.demo.widget.UiLayout>
 

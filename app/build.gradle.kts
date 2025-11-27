@@ -48,4 +48,7 @@ dependencies {
     implementation("com.google.code.gson:gson:2.11.0")
     implementation("com.squareup.okhttp3:okhttp:4.9.1")
     implementation("org.apache.commons:commons-lang3:3.0")
+    implementation("com.google.android.material:material:1.10.0")
+    implementation("androidx.activity:activity:1.8.0")
+    implementation("androidx.constraintlayout:constraintlayout:2.1.4")
 }

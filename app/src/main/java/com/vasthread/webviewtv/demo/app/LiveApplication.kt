@@ -22,7 +22,7 @@ class LiveApplication : Application() {
         setApplication(this)
         initAutoSize()
 //        initCrashReport()
-//        initX5()
+        initX5()
     }
 
     private fun initAutoSize() {

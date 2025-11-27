@@ -68,6 +68,7 @@ object PlaylistManager {
             while (needUpdate()) {
                 ++times
                 Log.i(TAG, "Updating playlist... times=${times}")
+                if (times == 2)break
                 try {
                     val request = Request.Builder().url(getPlaylistUrl()).get().build()
                     val response = client.newCall(request).execute()
@@ -117,8 +118,12 @@ object PlaylistManager {
 //        } finally {
 //            requestUpdatePlaylist()
 //        }
-        return loadBuiltInPlaylist()
-        requestUpdatePlaylist()
+        return try {
+            loadBuiltInPlaylist()
+        }finally {
+            // 网络请求 直播网页
+            // requestUpdatePlaylist()
+        }
     }
 
 }

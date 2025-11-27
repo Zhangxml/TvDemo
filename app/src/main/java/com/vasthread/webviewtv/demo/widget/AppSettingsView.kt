@@ -26,12 +26,12 @@ class AppSettingsView @JvmOverloads constructor(
     private val rvSettings: RecyclerView
 
     private val settings = arrayOf(
-        SettingItem(
+        /*SettingItem(
             R.string.channel_list,
             SettingsManager.getPlaylistNames(),
             SettingsManager.getSelectedPlaylistPosition(),
             onItemSelect = SettingsManager::setSelectedPlaylistPosition
-        ),
+        ),*/
         SettingItem(
             R.string.max_loading_time,
             context.resources.getStringArray(R.array.loading_time_text),

@@ -16,6 +16,7 @@ import com.vasthread.webviewtv.demo.playlist.Channel
 import com.vasthread.webviewtv.demo.playlist.Playlist.Companion.firstChannel
 import com.vasthread.webviewtv.demo.playlist.PlaylistManager
 import com.vasthread.webviewtv.demo.settings.SettingsManager
+import com.vasthread.webviewtv.demo.widget.AppSettingsView
 import com.vasthread.webviewtv.demo.widget.ChannelPlayerView
 import com.vasthread.webviewtv.demo.widget.ChannelSettingsView
 import com.vasthread.webviewtv.demo.widget.ExitConfirmView
@@ -48,7 +49,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var playlistView: PlaylistView
     private lateinit var exitConfirmView: ExitConfirmView
     private lateinit var channelSettingsView: ChannelSettingsView
-//    private lateinit var appSettingsView: AppSettingsView
+    private lateinit var appSettingsView: AppSettingsView
 
     private var lastChannel: Channel? = null
 
@@ -59,7 +60,7 @@ class MainActivity : AppCompatActivity() {
             playlistView.visibility = if (value == UiMode.CHANNELS) View.VISIBLE else View.GONE
             exitConfirmView.visibility = if (value == UiMode.EXIT_CONFIRM) View.VISIBLE else View.GONE
             channelSettingsView.visibility = if (value == UiMode.CHANNEL_SETTINGS) View.VISIBLE else View.GONE
-//            appSettingsView.visibility = if (value == UiMode.APP_SETTINGS) View.VISIBLE else View.GONE
+            appSettingsView.visibility = if (value == UiMode.APP_SETTINGS) View.VISIBLE else View.GONE
             if (value == UiMode.STANDARD) {
                 playerView.requestFocus()
             }
@@ -83,7 +84,7 @@ class MainActivity : AppCompatActivity() {
         playlistView = findViewById(R.id.playlist)
         exitConfirmView = findViewById(R.id.exitConfirm)
         channelSettingsView = findViewById(R.id.channelSettings)
-//        appSettingsView = findViewById(R.id.appSettings)
+        appSettingsView = findViewById(R.id.appSettings)
 
         window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION or
                 View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or
@@ -222,7 +223,7 @@ class MainActivity : AppCompatActivity() {
             UiMode.CHANNELS -> if (playlistView.dispatchKeyEvent(event)) return true
             UiMode.EXIT_CONFIRM -> if (exitConfirmView.dispatchKeyEvent(event)) return true
             UiMode.CHANNEL_SETTINGS -> if (channelSettingsView.dispatchKeyEvent(event)) return true
-//            UiMode.APP_SETTINGS -> if (appSettingsView.dispatchKeyEvent(event)) return true
+            UiMode.APP_SETTINGS -> if (appSettingsView.dispatchKeyEvent(event)) return true
             else -> {
                 if (event.action == KeyEvent.ACTION_UP) {
                     when (keyCode) {
