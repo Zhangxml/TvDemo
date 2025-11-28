@@ -9,6 +9,7 @@ import android.view.View
 import android.view.WindowManager
 import android.view.accessibility.AccessibilityEvent
 import android.widget.FrameLayout
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.vasthread.webviewtv.demo.R
 import com.vasthread.webviewtv.demo.misc.preference
@@ -22,6 +23,9 @@ import com.vasthread.webviewtv.demo.widget.ChannelSettingsView
 import com.vasthread.webviewtv.demo.widget.ExitConfirmView
 import com.vasthread.webviewtv.demo.widget.PlaylistView
 import me.jessyan.autosize.AutoSize
+import java.text.SimpleDateFormat
+import java.util.Locale
+import kotlin.system.measureTimeMillis
 
 class MainActivity : AppCompatActivity() {
 
@@ -51,6 +55,10 @@ class MainActivity : AppCompatActivity() {
     private lateinit var channelSettingsView: ChannelSettingsView
     private lateinit var appSettingsView: AppSettingsView
 
+    private lateinit var timeView: TextView
+    private lateinit var updateAction: Runnable
+    private val sdf = SimpleDateFormat("HH:mm:ss", Locale.CHINA)
+
     private var lastChannel: Channel? = null
 
     private var uiMode = UiMode.STANDARD
@@ -78,6 +86,7 @@ class MainActivity : AppCompatActivity() {
     @Suppress("DEPRECATION")
     private fun setupUi() {
         setContentView(R.layout.activity_main)
+        timeView = findViewById(R.id.times)
         mainLayout = findViewById(R.id.mainLayout)
         uiLayout = findViewById(R.id.uiLayout)
         playerView = findViewById(R.id.player)
@@ -93,6 +102,14 @@ class MainActivity : AppCompatActivity() {
                 View.SYSTEM_UI_FLAG_LAYOUT_STABLE
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON or
                 WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM)
+
+        updateAction = Runnable {
+            var time = measureTimeMillis {
+                timeView.text = sdf.format(System.currentTimeMillis())
+            }
+            timeView.postDelayed(updateAction, 1000L - time)
+        }
+        timeView.post(updateAction)
     }
 
     private fun setupListener() {
@@ -125,7 +142,8 @@ class MainActivity : AppCompatActivity() {
         playerView.clickCallback = { x, _ ->
             val channelSettingsWidth = channelSettingsView.layoutParams.width + uiLayout.paddingRight
             uiMode = if (uiMode == UiMode.STANDARD)
-                if (x < playerView.width - channelSettingsWidth) UiMode.CHANNELS else UiMode.CHANNEL_SETTINGS
+                //if (x < playerView.width - channelSettingsWidth) UiMode.CHANNELS else UiMode.CHANNEL_SETTINGS
+                UiMode.CHANNELS
             else
                 UiMode.STANDARD
         }
