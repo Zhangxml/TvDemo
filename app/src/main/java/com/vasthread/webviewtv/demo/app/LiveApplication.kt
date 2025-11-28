@@ -14,7 +14,7 @@ import me.jessyan.autosize.AutoSizeConfig
 class LiveApplication : Application() {
 
     companion object {
-        private const val TAG = "LiveApplication"
+        private const val TAG = "TvLiveApplication"
     }
 
     override fun onCreate() {
@@ -44,6 +44,20 @@ class LiveApplication : Application() {
                 Log.i(TAG, "onViewInitFinished, isX5=$isX5")
             }
         })
+
+//        X5CoreManager.initX5Core(baseContext, listener = object : X5CoreListener {
+//            override fun onCoreInitFinished() {
+//                Log.d(TAG, "onCoreInitFinished: ")
+//            }
+//
+//            override fun onViewInitFinished(isX5: Boolean) {
+//                Log.d(TAG, "onViewInitFinished: ")
+//            }
+//
+//            override fun onInstallFinish(stateCode: Int) {
+//                Log.d(TAG, "onInstallFinish: $stateCode")
+//            }
+//        })
     }
 
     private fun initCrashReport() {

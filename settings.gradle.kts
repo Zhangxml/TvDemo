@@ -18,3 +18,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "TvDemo"
 include(":app")
+//include(":x5core_armeabi_v7a")

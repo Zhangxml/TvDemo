@@ -21,8 +21,9 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
 //        ndk {
-//            abiFilters += listOf("arm64-v8a")
+//            abiFilters += listOf("armeabi-v7a")
 //        }
+
     }
 
     buildTypes {
@@ -59,6 +60,7 @@ dependencies {
     implementation("androidx.recyclerview:recyclerview:1.3.2")
     implementation("androidx.preference:preference-ktx:1.2.1")
     implementation("com.tencent.tbs:tbssdk:44286")
+//    implementation(project(":x5core_armeabi_v7a"))
     implementation("com.tencent.bugly:crashreport:latest.release")
     implementation("com.github.JessYanCoding:AndroidAutoSize:v1.2.1")
     implementation("com.google.code.gson:gson:2.11.0")

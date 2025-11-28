@@ -2,9 +2,19 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <!-- WebView定位功能权限 -->
+    <!-- 粗略定位权限，允许一个程序通过网络获取粗略的位置 -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" /> <!-- 精确定位权限，允许一个程序访问精确位置(GPS定位) -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <!-- debugtbs.qq.com 安装线上内核需要权限-->
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <!-- 写入tbslog.txt需要权限，否则通过QbSdk.setTbsLogClient()接管解决 -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <!-- TBS基础权限需求 -->
+    <uses-permission android:name="android.permission.INTERNET" />
+
 
     <application
         android:name=".app.LiveApplication"
@@ -48,7 +58,11 @@
         <service
             android:name="com.tencent.smtt.export.external.DexClassLoaderProviderService"
             android:label="dexopt"
-            android:process=":dexopt" />
+            android:process=":dexopt"/>
+
+        <service android:name="com.tv.x5core.X5ProcessInitService"
+            android:process=":web"
+            android:exported="false"/>
     </application>
 
 </manifest>
