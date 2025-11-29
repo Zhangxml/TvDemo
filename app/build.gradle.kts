@@ -6,17 +6,18 @@ plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
 }
+val time = SimpleDateFormat("yyyyMMdd", Locale.getDefault()).format(Date())
 
 android {
-    namespace = "com.vasthread.webviewtv.demo"
+    namespace = "com.webviewtv.demo"
     compileSdk = 36
 
     defaultConfig {
-        applicationId = "com.vasthread.webviewtv.demo"
+        applicationId = "com.webviewtv.demo"
         minSdk = 21
         targetSdk = 34
-        versionCode = 6
-        versionName = "25.11.27"
+        versionCode = 26
+        versionName = time
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
@@ -43,12 +44,12 @@ android {
     applicationVariants.all {
         val buildType = buildType.name // debug/release
         val version = versionName // 1.0.0
-        val time = SimpleDateFormat("yyyyMMdd", Locale.getDefault()).format(Date())
+
 
         outputs.all {
             val output = this as com.android.build.gradle.internal.api.BaseVariantOutputImpl
             // 格式: MyApp-google-v1.0.0-debug-20241127.apk
-            output.outputFileName = "电视家-v${version}-${buildType}-${time}.apk"
+            output.outputFileName = "TV直播-${buildType}-v${version}.apk"
         }
     }
 
