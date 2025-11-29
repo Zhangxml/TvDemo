@@ -70,6 +70,9 @@ class WebpageAdapterWebView @JvmOverloads constructor(
     var onFullscreenStateChanged: ((Boolean) -> Unit)? = null
     var onVideoRatioChanged: ((Fraction) -> Unit)? = null
 
+
+    var onDismissChannelBarView: (() -> Unit)? = null
+
     private val client = object : WebViewClient() {
 
         override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
@@ -185,7 +188,7 @@ class WebpageAdapterWebView @JvmOverloads constructor(
         }
 
         override fun onShowCustomView(view: View, callback: IX5WebChromeClient.CustomViewCallback) {
-            Log.i(TAG, "onShowCustomView")
+            //Log.i(TAG, "onShowCustomView")
             this.view = view
             this.callback = callback
             fullscreenContainer.addView(view, generateLayoutParams())
@@ -194,7 +197,7 @@ class WebpageAdapterWebView @JvmOverloads constructor(
         }
 
         override fun onHideCustomView() {
-            Log.i(TAG, "onHideCustomView")
+            //Log.i(TAG, "onHideCustomView")
             fullscreenContainer.removeView(view)
             callback?.onCustomViewHidden()
             view = null
@@ -211,15 +214,15 @@ class WebpageAdapterWebView @JvmOverloads constructor(
     private val chromeClientExtension = object : ProxyWebChromeClientExtension() {
 
         override fun jsRequestFullScreen() {
-            Log.i(TAG, "jsRequestFullScreen")
+            //Log.i(TAG, "jsRequestFullScreen")
         }
 
         override fun h5videoRequestFullScreen(s: String) {
-            Log.i(TAG, "h5videoRequestFullScreen")
+            //Log.i(TAG, "h5videoRequestFullScreen")
         }
 
         override fun onPermissionRequest(origin: String, resources: Long, callback: MediaAccessPermissionsCallback): Boolean {
-            Log.i(TAG, "onPermissionRequest, origin=$origin, resources=$resources")
+            //Log.i(TAG, "onPermissionRequest, origin=$origin, resources=$resources")
             callback.invoke(origin, 0, true)
             return true
         }
@@ -329,22 +332,35 @@ class WebpageAdapterWebView @JvmOverloads constructor(
     fun notifyVideoPlaying() {
         disablePlayCheck()
         enablePlayCheck()
+        //Log.e(TAG, "notifyVideoPlaying  ")
     }
 
     @JavascriptInterface
     fun enablePlayCheck() {
         postDelayed(showWaitingViewAction, SHOW_WAITING_VIEW_DELAY)
+        //Log.e(TAG, "enablePlayCheck  ")
     }
 
     @JavascriptInterface
     fun disablePlayCheck() {
         removeCallbacks(showWaitingViewAction)
         post(dismissWaitingViewAction)
+        //Log.e(TAG, "disablePlayCheck  ")
     }
 
     @JavascriptInterface
     fun setVideoSize(width: Int, height: Int) {
         videoSize.set(width, height)
+        //Log.e(TAG, "setVideoSize  width = "+width + "  height = "+height)
+        if (width > 0 && height > 0){
+            postDelayed(Runnable { onDismissChannelBarView?.invoke()},800L)
+
+        }
+    }
+
+    @JavascriptInterface
+    fun dissWaitingView() {
+        //Log.e(TAG, "dissWaitingView ")
     }
 
     fun getVideoSize() = videoSize

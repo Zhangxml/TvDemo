@@ -6,6 +6,7 @@ import android.util.AttributeSet
 import android.view.KeyEvent
 import android.view.MotionEvent
 import android.view.View
+import android.view.View.VISIBLE
 import android.view.WindowManager
 import android.view.accessibility.AccessibilityEvent
 import android.widget.FrameLayout
@@ -112,6 +113,14 @@ class MainActivity : AppCompatActivity() {
         timeView.post(updateAction)
     }
 
+    fun setVisibility(visibility: Int) {
+        if (visibility == 0) {
+            timeView.post(updateAction)
+        } else {
+            timeView.removeCallbacks(updateAction)
+        }
+    }
+
     private fun setupListener() {
         playlistView.onChannelSelectCallback = {
             preference.edit().putString(LAST_CHANNEL, "${it.groupName}, ${it.name}").apply()
@@ -181,6 +190,7 @@ class MainActivity : AppCompatActivity() {
         if (lastChannel != null && playerView.channel == null) {
             playlistView.currentChannel = lastChannel
         }
+        setVisibility(0)
     }
 
     override fun onPause() {
@@ -188,6 +198,8 @@ class MainActivity : AppCompatActivity() {
         uiMode = UiMode.STANDARD
         lastChannel = playerView.channel
         playerView.channel = null
+
+        setVisibility(1)
     }
 
     override fun onDestroy() {

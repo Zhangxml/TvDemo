@@ -47,8 +47,6 @@ function wvt_setupVideo(video) {
 		console.log("Video state: CANPLAY.");
 		wvt_reportVideoSize(video);
 	});
-    //video.addEventListener('canplaythrough', function(e) { console.log("Video state: CANPLAYTHROUGH."); });
-    //video.addEventListener('durationchange', function(e) { console.log("Video state: DURATIONCHANGE."); });
 	video.wvt_setup = true;
 }
 
@@ -117,7 +115,7 @@ function wvt_main() {
 	setTimeout(() => { wvt_loop(0) }, 500);
 }
 
-if (!window.wvt_javascriptInjected) {
+if (!window.wvt_javascriptInjected) { // 从这里开始
 	console.log("WebViewTv javascript injected successfully.");
 	console.log("selector=[" + selector + "], enterFullscreenButton=[" + enterFullscreenButton
 	 + "], playingCheckEnabled=[" + playingCheckEnabled + "].");

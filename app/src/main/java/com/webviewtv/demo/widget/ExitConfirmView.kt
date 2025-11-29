@@ -5,6 +5,7 @@ import android.content.Context
 import android.os.Build
 import android.util.AttributeSet
 import android.view.Gravity
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.widget.Button
 import android.widget.LinearLayout
@@ -19,18 +20,24 @@ class ExitConfirmView @JvmOverloads constructor(
     enum class Selection { EXIT, SETTINGS }
 
     private val btnSettings: Button
+
+    private val btnExit: Button
+
     var onUserSelection: ((Selection) -> Unit)? = null
 
     init {
         isClickable = true
-        isFocusable = false
+        isFocusable = true
         gravity = Gravity.CENTER
         orientation = VERTICAL
         setBackgroundResource(R.drawable.bg)
         LayoutInflater.from(context).inflate(R.layout.widget_exit_confirm, this)
         btnSettings = findViewById(R.id.btnSettings)
         btnSettings.setOnClickListener { onUserSelection?.invoke(Selection.SETTINGS) }
+
+        btnExit = findViewById<Button>(R.id.btnExit)
         findViewById<Button>(R.id.btnExit).setOnClickListener { onUserSelection?.invoke(Selection.EXIT) }
+
         findViewById<TextView>(R.id.tvAppInfo).text = "App: ${context.packageManager.getPackageInfo(context.packageName, 0).versionName} | X5: ${QbSdk.getTbsVersion(context)}"
         findViewById<TextView>(R.id.tvSystemInfo).text = "Android ${Build.VERSION.RELEASE} (API ${Build.VERSION.SDK_INT})"
     }
@@ -38,7 +45,8 @@ class ExitConfirmView @JvmOverloads constructor(
     override fun setVisibility(visibility: Int) {
         super.setVisibility(visibility)
         if (visibility == VISIBLE) {
-            post { btnSettings.requestFocus() }
+            post { btnExit.requestFocus() }
         }
     }
+
 }

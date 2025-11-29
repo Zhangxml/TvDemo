@@ -79,6 +79,8 @@ class ChannelPlayerView @JvmOverloads constructor(
             onFullscreenStateChanged = {}
             onWaitingStateChanged = { waitingView.visibility = if (it) VISIBLE else GONE }
             onVideoRatioChanged = { this@ChannelPlayerView.onVideoRatioChanged?.invoke(it == WebpageAdapterWebView.RATIO_16_9) }
+
+            onDismissChannelBarView = {channelBarView.dismiss()}
         }
     }
 

@@ -24,7 +24,6 @@ android {
 //        ndk {
 //            abiFilters += listOf("armeabi-v7a")
 //        }
-
     }
 
     buildTypes {
