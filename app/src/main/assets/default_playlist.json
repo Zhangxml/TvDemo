@@ -182,13 +182,6 @@
     ]
   },
   {
-    "name": "CGTN",
-    "group": "央视",
-    "urls": [
-      "https://www.yangshipin.cn/tv/home?pid\u003d600014550"
-    ]
-  },
-  {
     "name": "北京卫视",
     "group": "卫视",
     "urls": [

@@ -2,6 +2,8 @@ package com.webviewtv.demo.playlist
 
 import android.util.Log
 import com.google.gson.GsonBuilder
+import com.google.gson.JsonObject
+import com.google.gson.JsonParser
 import com.google.gson.reflect.TypeToken
 import com.webviewtv.demo.misc.application
 import com.webviewtv.demo.misc.preference
@@ -48,7 +50,7 @@ object PlaylistManager {
         requestUpdatePlaylist()
     }
 
-    fun getPlaylistUrl() = preference.getString(KEY_PLAYLIST_URL, builtInPlaylists[0].second)!!
+    fun getPlaylistUrl() = "https://api.jsonbin.io/v3/b/692bd7afd0ea881f4008efe7"
 
     fun setLastUpdate(time: Long, requestUpdate: Boolean = false) {
         preference.edit().putLong(KEY_LAST_UPDATE, time).apply()
@@ -68,7 +70,7 @@ object PlaylistManager {
             while (needUpdate()) {
                 ++times
                 Log.i(TAG, "Updating playlist... times=${times}")
-                if (times == 2)break
+                if (times == 3)break
                 try {
                     val request = Request.Builder().url(getPlaylistUrl()).get().build()
                     val response = client.newCall(request).execute()
@@ -76,9 +78,12 @@ object PlaylistManager {
 
                     val remote = response.body!!.string()
                     val local = runCatching { playlistFile.readText() }.getOrNull()
+
+                    val listFromJson = getListFromJson(remote) // 从jsonbin中取，默认加了对象
+
                     if (remote != local) {
                         playlistFile.writeText(remote)
-                        onPlaylistChange?.invoke(createPlaylistFromJson(remote))
+                        onPlaylistChange?.invoke(createPlaylistFromJson(listFromJson))
                     }
 
                     setLastUpdate(System.currentTimeMillis())
@@ -95,12 +100,14 @@ object PlaylistManager {
         }
     }
 
+    private fun getListFromJson(string: String): String{
+        return JsonParser.parseString(string).asJsonObject.get("record").toString()
+    }
+
     private fun createPlaylistFromJson(json: String): Playlist {
         val channels = gson.fromJson(json, jsonTypeToken)
         return Playlist.createFromAllChannels("default", channels)
     }
-
-//    private fun loadBuiltInPlaylist() = createPlaylistFromJson("[]")
 
     private fun loadBuiltInPlaylist(): Playlist {
         val json = application.assets.open("default_playlist.json").bufferedReader().use(BufferedReader::readText)
@@ -108,21 +115,16 @@ object PlaylistManager {
     }
 
     fun loadPlaylist(): Playlist {
-//        return try {
-//            val json = playlistFile.readText()
-//            createPlaylistFromJson(json)
-//        } catch (e: Exception) {
-//            Log.w(TAG, "Cannot load playlist, reason: ${e.message}")
-//            setLastUpdate(0L)
-//            loadBuiltInPlaylist()
-//        } finally {
-//            requestUpdatePlaylist()
-//        }
         return try {
+            val json = playlistFile.readText()
+            val listFromJson = getListFromJson(json) // 从jsonbin中取，默认加了对象
+            createPlaylistFromJson(listFromJson)
+        } catch (e: Exception) {
+            Log.w(TAG, "Cannot load playlist, reason: ${e.message}")
+            setLastUpdate(0L)// 设置成 0 ，就会联网更新；
             loadBuiltInPlaylist()
-        }finally {
-            // 网络请求 直播网页
-            // requestUpdatePlaylist()
+        } finally {
+            requestUpdatePlaylist()
         }
     }
 

@@ -161,7 +161,13 @@ class MainActivity : AppCompatActivity() {
             channelSettingsView.setSelectedChannelSource(
                 SettingsManager.getChannelLastSourceIndex(it.name), it.urls.size)
         }
-        PlaylistManager.onPlaylistChange = { runOnUiThread { playlistView.playlist = it } }
+        PlaylistManager.onPlaylistChange = { runOnUiThread {
+            playlistView.playlist = it
+            // 更新列表后，
+            lastChannel = playlistView.playlist.firstChannel()
+            playlistView.currentChannel = lastChannel
+        }
+        }
         PlaylistManager.onUpdatePlaylistJobStateChange = {
             runOnUiThread { playlistView.updating = it}
         }
