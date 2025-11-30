@@ -5,6 +5,7 @@ import android.graphics.Color
 import android.graphics.Rect
 import android.os.Build
 import android.util.AttributeSet
+import android.util.Log
 import android.view.GestureDetector
 import android.view.KeyEvent
 import android.view.LayoutInflater
@@ -43,6 +44,8 @@ class ChannelPlayerView @JvmOverloads constructor(
     var onChannelReload: ((Channel) -> Unit)? = null
     var onVideoRatioChanged: ((Boolean) -> Unit)? = null
 
+    var delayDismiss = Runnable { dismiss() } // 延时dismiss
+
     private val gestureDetector = GestureDetector(context, object : GestureDetector.OnGestureListener {
 
         override fun onDown(e: MotionEvent) = true
@@ -80,7 +83,19 @@ class ChannelPlayerView @JvmOverloads constructor(
             onWaitingStateChanged = { waitingView.visibility = if (it) VISIBLE else GONE }
             onVideoRatioChanged = { this@ChannelPlayerView.onVideoRatioChanged?.invoke(it == WebpageAdapterWebView.RATIO_16_9) }
 
-            onDismissChannelBarView = {channelBarView.dismiss()}
+            onDismissChannelBarView = {dismiss()} // 隐藏barView
+        }
+    }
+
+    // 隐藏barView
+    fun dismiss(){
+        Log.i(TAG, "dismiss: ")
+        removeCallbacks(delayDismiss)
+
+        if (webView.isInFullscreen()){
+            channelBarView.dismiss()
+        }else{
+            postDelayed(delayDismiss, 100L)
         }
     }
 

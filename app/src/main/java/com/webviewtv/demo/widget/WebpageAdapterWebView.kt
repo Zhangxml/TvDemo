@@ -188,7 +188,7 @@ class WebpageAdapterWebView @JvmOverloads constructor(
         }
 
         override fun onShowCustomView(view: View, callback: IX5WebChromeClient.CustomViewCallback) {
-            //Log.i(TAG, "onShowCustomView")
+            Log.i(TAG, "onShowCustomView")
             this.view = view
             this.callback = callback
             fullscreenContainer.addView(view, generateLayoutParams())
@@ -197,7 +197,7 @@ class WebpageAdapterWebView @JvmOverloads constructor(
         }
 
         override fun onHideCustomView() {
-            //Log.i(TAG, "onHideCustomView")
+            Log.i(TAG, "onHideCustomView")
             fullscreenContainer.removeView(view)
             callback?.onCustomViewHidden()
             view = null

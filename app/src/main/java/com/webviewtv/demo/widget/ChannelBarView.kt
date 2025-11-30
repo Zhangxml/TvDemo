@@ -2,6 +2,7 @@ package com.webviewtv.demo.widget
 
 import android.content.Context
 import android.util.AttributeSet
+import android.util.Log
 import android.view.LayoutInflater
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -47,12 +48,13 @@ class ChannelBarView @JvmOverloads constructor(
     fun dismiss() {
         removeCallbacks(dismissAction)
         post { visibility = GONE }
+        Log.i("ChannelBarView", "dismiss: >>>>>")
     }
 
     fun setProgress(progress: Int) {
         removeCallbacks(dismissAction)
         tvChannelUrl.text = tvChannelUrl.tag.toString() + " $progress%"
-        if (progress == 100) { // 进度100时，实际可能不会播放在
+        if (progress == 100) { // 进度100时，实际可能不会全屏播放在
             //postDelayed(dismissAction, DISMISS_DELAY)
         }
     }

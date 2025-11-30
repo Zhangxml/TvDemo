@@ -16,7 +16,7 @@ android {
         applicationId = "com.webviewtv.demo"
         minSdk = 21
         targetSdk = 34
-        versionCode = 26
+        versionCode = 251130
         versionName = time
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -26,9 +26,21 @@ android {
 //        }
     }
 
+    signingConfigs {
+        create("release") { // aosp_16
+            storeFile = file("key/platform.jks")
+            storePassword = "dev123"
+            keyAlias = "dev123"
+            keyPassword = "dev123"
+            enableV1Signing = true
+            enableV2Signing = true
+        }
+    }
+
     buildTypes {
         release {
             isMinifyEnabled = false
+            signingConfig = signingConfigs.getByName("release")
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
     }
@@ -48,7 +60,7 @@ android {
         outputs.all {
             val output = this as com.android.build.gradle.internal.api.BaseVariantOutputImpl
             // 格式: MyApp-google-v1.0.0-debug-20241127.apk
-            output.outputFileName = "TV直播-${buildType}-v${version}.apk"
+            output.outputFileName = "TV直播(${buildType}-v${version}).apk"
         }
     }
 
