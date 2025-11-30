@@ -5,13 +5,12 @@ import android.content.Context
 import android.os.Build
 import android.util.AttributeSet
 import android.view.Gravity
-import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
-import com.tencent.smtt.sdk.QbSdk
 import com.webviewtv.demo.R
+import com.webviewtv.demo.app.App
 
 @SuppressLint("SetTextI18n")
 class ExitConfirmView @JvmOverloads constructor(
@@ -38,7 +37,7 @@ class ExitConfirmView @JvmOverloads constructor(
         btnExit = findViewById<Button>(R.id.btnExit)
         findViewById<Button>(R.id.btnExit).setOnClickListener { onUserSelection?.invoke(Selection.EXIT) }
 
-        findViewById<TextView>(R.id.tvAppInfo).text = "App: ${context.packageManager.getPackageInfo(context.packageName, 0).versionName} | X5: ${QbSdk.getTbsVersion(context)}"
+        findViewById<TextView>(R.id.tvAppInfo).text = "WebView ${" "+App.mWebViewVersion}"
         findViewById<TextView>(R.id.tvSystemInfo).text = "Android ${Build.VERSION.RELEASE} (API ${Build.VERSION.SDK_INT})"
     }
 

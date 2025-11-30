@@ -11,10 +11,17 @@ import com.webviewtv.demo.misc.setApplication
 import com.webviewtv.demo.settings.SettingsManager
 import me.jessyan.autosize.AutoSizeConfig
 
-class LiveApplication : Application() {
+class App : Application() {
 
     companion object {
         private const val TAG = "TvLiveApplication"
+        var mWebViewVersion: String? = null
+            get() {
+                return field
+            }
+            set(value) {
+                field = value
+            }
     }
 
     override fun onCreate() {

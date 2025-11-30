@@ -5,6 +5,7 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.Point
+import android.os.Build
 import android.os.SystemClock
 import android.util.AttributeSet
 import android.util.Log
@@ -30,6 +31,7 @@ import com.tencent.smtt.sdk.WebSettings
 import com.tencent.smtt.sdk.WebView
 import com.tencent.smtt.sdk.WebViewClient
 import com.webviewtv.demo.adapter.WebpageAdapterManager
+import com.webviewtv.demo.app.App
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -244,9 +246,22 @@ class WebpageAdapterWebView @JvmOverloads constructor(
             webChromeClient = chromeClient
             webChromeClientExtension = chromeClientExtension
             setBackgroundColor(Color.BLACK)
-            addJavascriptInterface(this, "main")
+            addJavascriptInterface(this, "main") // js中通过“main”，找对应android方法
+            getWebVersion() // 版本
         }
     }
+
+    fun getWebVersion(): Pair<String?, Int>? {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+            val currentWebViewPackage = getCurrentWebViewPackage()
+            val versionName = currentWebViewPackage.versionName
+            val versionCode = currentWebViewPackage.versionCode
+            App.mWebViewVersion = versionName
+            return Pair(versionName, versionCode)
+        }
+        return null
+    }
+
 
     @JavascriptInterface
     override fun loadUrl(url: String) {
