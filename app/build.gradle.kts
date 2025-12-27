@@ -16,7 +16,7 @@ android {
         applicationId = "com.webviewtv.demo"
         minSdk = 21
         targetSdk = 34
-        versionCode = 251130
+        versionCode = 251227
         versionName = time
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -60,7 +60,7 @@ android {
         outputs.all {
             val output = this as com.android.build.gradle.internal.api.BaseVariantOutputImpl
             // 格式: MyApp-google-v1.0.0-debug-20241127.apk
-            output.outputFileName = "TV直播(${buildType}-v${version}).apk"
+            output.outputFileName = "电视直播(${buildType}-v${version}).apk"
         }
     }
 
