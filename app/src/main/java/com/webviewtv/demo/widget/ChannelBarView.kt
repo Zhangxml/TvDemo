@@ -14,7 +14,7 @@ class ChannelBarView @JvmOverloads constructor(
 ) : LinearLayout(context, attrs, defStyleAttr) {
 
     companion object {
-        private const val DISMISS_DELAY = 0L
+        private const val DISMISS_DELAY = 1000*10L
     }
 
     private val tvChannelName: TextView
@@ -52,10 +52,12 @@ class ChannelBarView @JvmOverloads constructor(
     }
 
     fun setProgress(progress: Int) {
+        var progressCurrent = progress
         removeCallbacks(dismissAction)
-        tvChannelUrl.text = tvChannelUrl.tag.toString() + " $progress%"
+        if (progressCurrent == 100) progressCurrent = 99
+        tvChannelUrl.text = tvChannelUrl.tag.toString() + " $progressCurrent%"
         if (progress == 100) { // 进度100时，实际可能不会全屏播放在
-            //postDelayed(dismissAction, DISMISS_DELAY)
+            postDelayed(dismissAction, DISMISS_DELAY)
         }
     }
 }

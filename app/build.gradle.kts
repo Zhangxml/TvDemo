@@ -6,7 +6,7 @@ plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
 }
-val time = SimpleDateFormat("yyyyMMdd", Locale.getDefault()).format(Date())
+//val time = SimpleDateFormat("yyyyMMdd", Locale.getDefault()).format(Date())
 
 android {
     namespace = "com.webviewtv.demo"
@@ -16,8 +16,8 @@ android {
         applicationId = "com.webviewtv.demo"
         minSdk = 21
         targetSdk = 34
-        versionCode = 251227
-        versionName = time
+        versionCode = 260127
+        versionName = "3.01.27"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
