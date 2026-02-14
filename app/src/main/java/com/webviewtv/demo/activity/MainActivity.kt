@@ -173,6 +173,10 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    override fun finish() {
+        super.finish()
+        System.exit(0)
+    }
     private fun initChannels() {
         playlistView.playlist = PlaylistManager.loadPlaylist()
         runCatching {

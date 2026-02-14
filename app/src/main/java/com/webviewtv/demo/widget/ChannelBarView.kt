@@ -14,7 +14,7 @@ class ChannelBarView @JvmOverloads constructor(
 ) : LinearLayout(context, attrs, defStyleAttr) {
 
     companion object {
-        private const val DISMISS_DELAY = 1000*10L
+        private const val DISMISS_DELAY = 1000*15L
     }
 
     private val tvChannelName: TextView
