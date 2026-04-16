@@ -40,6 +40,12 @@ function wvt_setupVideo(video) {
             window.wvt_lastNotifyVideoPlaying = Date.now();
     	}
     });
+    video.addEventListener('playing', function() {
+    	console.log("Video state: PLAYING (after buffering).");
+    	// 网络差时 play 事件触发后可能因缓冲暂停，缓冲恢复后会触发 playing
+    	// 此时再次通知 Native 尝试全屏，作为 play 事件的补救
+		window.main.schemeEnterFullscreen();
+    });
     video.addEventListener('pause', function() { console.log("Video state: PAUSE."); });
     video.addEventListener('timeupdate', function() { wvt_onTimeUpdate(video); });
     video.addEventListener('error', function(e) { console.log("Video state: ERROR."); });
@@ -88,12 +94,21 @@ function wvt_fullscreenVideo() {
 		    try {
 		        element = document.querySelector(enterFullscreenButton);
 		    } catch (e) {
-		        console.error("use video.requestFullscreen(), element [" + enterFullscreenButton + "] not found.");
+		        console.error("querySelector error for [" + enterFullscreenButton + "]: " + e);
 		    }
-		    if (element != null) {
-		        element.click();
-		    } else {
-		        window.wvt_video.requestFullscreen();
+		    try {
+		        if (element != null) {
+		            element.click();
+		        } else {
+		            window.wvt_video.requestFullscreen();
+		        }
+		    } catch (e) {
+		        console.error("Enter fullscreen error, fallback to requestFullscreen(): " + e);
+		        try {
+		            window.wvt_video.requestFullscreen();
+		        } catch (e2) {
+		            console.error("Fallback requestFullscreen() failed: " + e2);
+		        }
 		    }
 		} else {
 			console.error("wvt_video is null."); 

@@ -20,7 +20,8 @@ open class CommonWebpageAdapter : WebpageAdapter() {
         internal const val DOUBLE_CLICK_INTERVAL = 50L
         internal const val CHECK_CANCELLATION_INTERVAL = 50L
         internal const val CHECK_FOCUS_INTERVAL = 500L
-        internal const val ENTER_FULLSCREEN_MAX_TRY = 10
+        // 弱网环境下增大重试次数，确保缓冲恢复后仍有足够时间尝试全屏
+        internal const val ENTER_FULLSCREEN_MAX_TRY = 30
         private val JAVASCRIPT_TEMPLATE = application.assets.open("default_js_template.js").bufferedReader().use(BufferedReader::readText)
     }
 
@@ -70,8 +71,19 @@ open class CommonWebpageAdapter : WebpageAdapter() {
             var times = 0
             while (times < ENTER_FULLSCREEN_MAX_TRY) {
                 delayAndCheckCancellation(webView, url, ENTER_FULLSCREEN_DELAY)
-                while (!webView.hasFocus() && !webView.isInTouchMode) {
-                    delayAndCheckCancellation(webView, url, CHECK_FOCUS_INTERVAL)
+                // 弱网环境下页面渲染可能断断续续，增加焦点获取重试
+                var focusRetryCount = 0
+                try {
+                    while (!webView.hasFocus() && !webView.isInTouchMode && focusRetryCount < 10) {
+                        delayAndCheckCancellation(webView, url, CHECK_FOCUS_INTERVAL)
+                        focusRetryCount++
+                    }
+                }catch (e: Exception) {
+                    Log.w(TAG, "Focus check error: ${e.message}")
+                }
+                if (!webView.hasFocus() && !webView.isInTouchMode) {
+                    // 仍无法获取焦点时仍然尝试发送按键，作为补救
+                    Log.w(TAG, "WebView focus unavailable, trying anyway...")
                 }
                 webView.requestFocus()
                 keyClick(webView, keycode)
