@@ -61,7 +61,9 @@ class MainActivity : AppCompatActivity() {
     private val sdf = SimpleDateFormat("HH:mm:ss", Locale.CHINA)
 
     private var lastChannel: Channel? = null
+    private var lastKeyDownTime = 0L
 
+    // Default UI Mode might be altered prematurely if not careful
     private var uiMode = UiMode.STANDARD
         set(value) {
             if (field == value) return
@@ -74,6 +76,8 @@ class MainActivity : AppCompatActivity() {
                 playerView.requestFocus()
             }
         }
+
+    private var isFirstLaunch = true
 
     private val backToStandardModeAction = Runnable { uiMode = UiMode.STANDARD }
 
@@ -127,7 +131,13 @@ class MainActivity : AppCompatActivity() {
             playerView.channel = it
             channelSettingsView.setSelectedChannelSource(
                 SettingsManager.getChannelLastSourceIndex(it.name), it.urls.size)
-            playlistView.post { uiMode = UiMode.STANDARD }
+            
+            if (isFirstLaunch) {
+                isFirstLaunch = false
+                // Do not change uiMode on first launch to prevent flash
+            } else {
+                playlistView.post { uiMode = UiMode.STANDARD }
+            }
         }
         channelSettingsView.onAspectRatioSelected = {
             playerView.setVideoRatio(it)
@@ -198,7 +208,9 @@ class MainActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         if (lastChannel != null && playerView.channel == null) {
+            val lastMode = uiMode
             playlistView.currentChannel = lastChannel
+            uiMode = lastMode
         }
         setVisibility(0)
     }
@@ -259,6 +271,15 @@ class MainActivity : AppCompatActivity() {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             return super.dispatchKeyEvent(event)
         }
+
+        if (event.action == KeyEvent.ACTION_DOWN) {
+            lastKeyDownTime = event.downTime
+        } else if (event.action == KeyEvent.ACTION_UP) {
+            if (event.downTime != lastKeyDownTime) {
+                return true
+            }
+        }
+
         when (uiMode) {
             UiMode.CHANNELS -> if (playlistView.dispatchKeyEvent(event)) return true
             UiMode.EXIT_CONFIRM -> if (exitConfirmView.dispatchKeyEvent(event)) return true

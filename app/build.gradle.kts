@@ -16,8 +16,8 @@ android {
         applicationId = "com.webviewtv.demo"
         minSdk = 21
         targetSdk = 34
-        versionCode = 26041600
-        versionName = "3.04.16"
+        versionCode = 26041601
+        versionName = "3.04.161"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 

@@ -21,7 +21,7 @@ import java.util.concurrent.TimeUnit
 object PlaylistManager {
 
     private const val TAG = "PlaylistManager"
-    private const val CACHE_EXPIRATION_MS = 24 * 60 * 60 * 1000L
+    private const val CACHE_EXPIRATION_MS = 365 * 24 * 60 * 60 * 1000L // 1 年
     private const val KEY_PLAYLIST_URL = "playlist_url"
     private const val KEY_LAST_UPDATE = "last_update"
     private const val UPDATE_RETRY_DELAY = 10 * 1000L
